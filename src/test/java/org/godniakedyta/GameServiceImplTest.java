@@ -3,6 +3,7 @@ package org.godniakedyta;
 import org.godniakedyta.game.Game;
 import org.godniakedyta.game.GameServiceImpl;
 import org.godniakedyta.game.GameStorage;
+import org.godniakedyta.game.Rivals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,13 +22,11 @@ class GameServiceImplTest {
 
     private GameServiceImpl gameServiceImpl;
     private GameStorage gameStorage;
-    private ArgumentCaptor<Game> gameCaptor;
 
     @BeforeEach
     void setup() {
         gameStorage = Mockito.mock(GameStorage.class);
         gameServiceImpl = new GameServiceImpl(gameStorage);
-        gameCaptor = ArgumentCaptor.forClass(Game.class);
     }
 
     @Test
@@ -42,6 +41,7 @@ class GameServiceImplTest {
     @Test
     void GIVEN_allParamsProvided_WHEN_start_THEN_newGameAddedToStorage() {
         //given
+        ArgumentCaptor<Game> gameCaptor = ArgumentCaptor.forClass(Game.class);
         var homeTeam = "Austria";
         var awayTeam = "Belgium";
         //when
@@ -83,6 +83,30 @@ class GameServiceImplTest {
         when(gameStorage.findGameByRivals(any())).thenReturn(Optional.of(Game.builder().build()));
         //then
         assertThrows(UnsupportedOperationException.class, () -> gameServiceImpl.start(homeTeam, awayTeam));
+    }
+
+    @Test
+    void GIVEN_allParamsProvided_WHEN_end_THEN_runWithoutExceptions() {
+        //given
+        var teamHome = "Austria";
+        var teamAway = "Belgium";
+        //when
+        gameServiceImpl.end(teamHome, teamAway);
+    }
+
+    @Test
+    void GIVEN_allParamsProvided_WHEN_end_THEN_gameDeletedFromStorage() {
+        //given
+        ArgumentCaptor<Rivals> rivalsCaptor = ArgumentCaptor.forClass(Rivals.class);
+        var homeTeam = "Austria";
+        var awayTeam = "Belgium";
+        //when
+        gameServiceImpl.end(homeTeam, awayTeam);
+        //then
+        verify(gameStorage, times(1)).delete(rivalsCaptor.capture());
+        var rivals = rivalsCaptor.getValue();
+        assertEquals(homeTeam, rivals.homeTeam());
+        assertEquals(awayTeam, rivals.awayTeam());
     }
 
 }
