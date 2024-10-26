@@ -67,7 +67,8 @@ class GameServiceImplTest {
             ",",
             "Austria,",
             ",Austria",
-            "'',"})
+            "'',",
+            "' ',Austria"})
     void GIVEN_wrongParams_WHEN_start_THEN_IllegalArgumentExpectionIsThrown(String homeTeam, String awayTeam) {
         //then
         assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.start(homeTeam, awayTeam));

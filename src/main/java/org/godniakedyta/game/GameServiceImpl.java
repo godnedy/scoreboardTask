@@ -11,6 +11,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void start(String homeTeam, String awayTeam) {
+        validateTeams(homeTeam, awayTeam);
         Game newGame = Game.builder()
                 .rivals(new Rivals(homeTeam, awayTeam))
                 .homeTeamScore(0)
@@ -19,6 +20,16 @@ public class GameServiceImpl implements GameService {
                 .startTime(ZonedDateTime.now())
                 .build();
         gameStorage.add(newGame);
+    }
+
+    private void validateTeams(String homeTeam, String awayTeam) {
+        if (homeTeam == null
+                || homeTeam.isBlank()
+                || awayTeam == null
+                || awayTeam.isBlank()
+                || homeTeam.equals(awayTeam)) {
+            throw new IllegalArgumentException("You must specify both teams as not empty and non equal strings");
+        }
     }
 
     @Override
