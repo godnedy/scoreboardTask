@@ -1,6 +1,11 @@
 package org.godniakedyta.game;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
+
+    private final GameStorage gameStorage;
 
     @Override
     public void start(String homeTeam, String awayTeam) {
