@@ -53,6 +53,7 @@ class GameServiceImplTest {
         assertEquals(teamAway, gamePassed.getRivals().awayTeam());
         assertEquals(0, gamePassed.getHomeTeamScore());
         assertEquals(0, gamePassed.getAwayTeamScore());
+        assertEquals(0, gamePassed.getTotalScore());
         assertTrue(timeBeforeExecution.isBefore(gamePassed.getStartTime()) && timeAfterExecution.isAfter(gamePassed.getStartTime()));
     }
 
