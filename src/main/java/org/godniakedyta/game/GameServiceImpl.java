@@ -12,6 +12,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public void start(String homeTeam, String awayTeam) {
         validateTeams(homeTeam, awayTeam);
+
         Game newGame = Game.builder()
                 .rivals(new Rivals(homeTeam, awayTeam))
                 .homeTeamScore(0)
@@ -30,11 +31,14 @@ public class GameServiceImpl implements GameService {
                 || homeTeam.equals(awayTeam)) {
             throw new IllegalArgumentException("You must specify both teams as not empty and non equal strings");
         }
+        Rivals rivals = new Rivals(homeTeam, awayTeam);
+        if (gameStorage.findGameByRivals(rivals).isPresent()) {
+            throw new UnsupportedOperationException("This game has already been started");
+        }
     }
 
     @Override
     public void end(String homeTeam, String awayTeam) {
-
     }
 
     @Override

@@ -3,7 +3,6 @@ package org.godniakedyta;
 import org.godniakedyta.game.Game;
 import org.godniakedyta.game.GameServiceImpl;
 import org.godniakedyta.game.GameStorage;
-import org.godniakedyta.game.Rivals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,8 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class GameServiceImplTest {
 
@@ -82,7 +80,7 @@ class GameServiceImplTest {
             "Belgium,Austria"})
     void GIVEN_allParamsProvided_WHEN_startAndGameAlreadyExists_THEN_UnsupportedOperationExceptionIsThrown(String homeTeam, String awayTeam) {
         //when
-        Mockito.when(gameStorage.findGameByRivals(any())).thenReturn(Optional.of(Game.builder().build()));
+        when(gameStorage.findGameByRivals(any())).thenReturn(Optional.of(Game.builder().build()));
         //then
         assertThrows(UnsupportedOperationException.class, () -> gameServiceImpl.start(homeTeam, awayTeam));
     }
