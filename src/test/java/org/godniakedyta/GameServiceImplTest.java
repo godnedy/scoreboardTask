@@ -109,4 +109,22 @@ class GameServiceImplTest {
         assertEquals(awayTeam, rivals.awayTeam());
     }
 
+    @ParameterizedTest(name = "{0} as homeTeam and {1} as awayTeam")
+    //etc. this is not a final list of all edge cases
+    @CsvSource({"Austria,Austria",
+            "Austria,''",
+            "'',''",
+            "'',Austria",
+            ",",
+            "Austria,",
+            ",Austria",
+            "'',",
+            "' ',Austria"})
+    void GIVEN_wrongParams_WHEN_end_THEN_IllegalArgumentExpectionIsThrown(String homeTeam, String awayTeam) {
+        //then
+        assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.end(homeTeam, awayTeam));
+    }
+
+
+
 }
