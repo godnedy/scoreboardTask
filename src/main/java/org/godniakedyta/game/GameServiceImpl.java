@@ -2,6 +2,8 @@ package org.godniakedyta.game;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.ZonedDateTime;
+
 @RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
 
@@ -9,7 +11,14 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void start(String homeTeam, String awayTeam) {
-
+        Game newGame = Game.builder()
+                .rivals(new Rivals(homeTeam, awayTeam))
+                .homeTeamScore(0)
+                .awayTeamScore(0)
+                .totalScore(0)
+                .startTime(ZonedDateTime.now())
+                .build();
+        gameStorage.add(newGame);
     }
 
     @Override
