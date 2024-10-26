@@ -1,9 +1,6 @@
 package org.godniakedyta;
 
-import org.godniakedyta.game.Game;
-import org.godniakedyta.game.GameServiceImpl;
-import org.godniakedyta.game.GameStorage;
-import org.godniakedyta.game.Rivals;
+import org.godniakedyta.game.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -82,7 +79,7 @@ class GameServiceImplTest {
         //when
         when(gameStorage.findGameByRivals(any())).thenReturn(Optional.of(Game.builder().build()));
         //then
-        assertThrows(UnsupportedOperationException.class, () -> gameServiceImpl.start(homeTeam, awayTeam));
+        assertThrows(RuntimeException.class, () -> gameServiceImpl.start(homeTeam, awayTeam));
     }
 
     @Test
@@ -125,6 +122,18 @@ class GameServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.end(homeTeam, awayTeam));
     }
 
+    @Test
+    void GIVEN_allParamsProvided_WHEN_score_THEN_runWithoutExceptions() {
+        //given
+        var teamsScore = TeamsScore.builder()
+                .homeTeam("Austria")
+                .awayTeam("Belgium")
+                .homeTeamScore(0)
+                .awayTeamScore(1)
+                .build();
+        //when
+        gameServiceImpl.score(teamsScore);
+    }
 
 
 }

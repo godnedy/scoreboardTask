@@ -37,7 +37,7 @@ public class GameServiceImpl implements GameService {
     private void validateGameNotStarted(String homeTeam, String awayTeam) {
         Rivals rivals = new Rivals(homeTeam, awayTeam);
         if (gameStorage.findGameByRivals(rivals).isPresent()) {
-            throw new UnsupportedOperationException("This game has already been started");
+            throw new RuntimeException("This game has already been started");
         }
     }
 
@@ -49,7 +49,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void score(int homeTeamScore, int awayTeamScore) {
+    public void score(TeamsScore teamsScore) {
 
     }
 }
