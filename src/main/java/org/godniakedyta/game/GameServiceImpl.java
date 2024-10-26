@@ -39,6 +39,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void end(String homeTeam, String awayTeam) {
+        Rivals rivals = new Rivals(homeTeam, awayTeam);
+        gameStorage.delete(rivals);
     }
 
     @Override
