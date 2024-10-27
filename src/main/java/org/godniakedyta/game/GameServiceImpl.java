@@ -51,6 +51,13 @@ public class GameServiceImpl implements GameService {
     @Override
     public void score(TeamsScore teamsScore) {
         validateTeams(teamsScore.homeTeam(), teamsScore.awayTeam());
+        validateScore(teamsScore.homeTeamScore(), teamsScore.awayTeamScore());
         gameStorage.update(teamsScore);
+    }
+
+    private void validateScore(int homeTeamScore, int awayTeamScore) {
+        if (homeTeamScore < 0 || awayTeamScore < 0) {
+            throw new IllegalArgumentException("Score cannot be negative");
+        }
     }
 }
