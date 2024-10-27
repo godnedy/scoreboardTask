@@ -1,12 +1,9 @@
 # scoreboardTask
 
-In order to use this library, you have to create GameServiceImpl instance with any GameStorage implementation (in this simple project I've used InMemoryGameStorage). This implementation should return games that are already sorted by totalScore (or startTime if totalScore is equal).
+In order to use this library, you have to create GameServiceImpl instance with any GameStorage implementation (in this simple project I've used InMemoryGameStorage). 
 
-I've decided to save games that are already sorted in Storage implementation, but if you want to sort it after fetching games, I would implement it using this code: 
+I've decided to return already sorted results from the Storage, but if you want to sort it after fetching games in service, you have to use GameComparator there.
 
-``       
-``
+I've used RuntimeException for other exceptions than IllegalArgumentException, but if I had more time I'd implement a custom exception here.
 
-I've used RuntimeException in case the game for the given teams is already started, but if I have more time I'd implement CustomException here.
-
-There might be additional try catch in end method if the game does not exist.
+For service layer I've commited the changes using TDD, for other classes I've commited all the changes together because I didn't want to spend additional time on it.
