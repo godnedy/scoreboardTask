@@ -135,5 +135,22 @@ class GameServiceImplTest {
         gameServiceImpl.score(teamsScore);
     }
 
+    @Test
+    void GIVEN_allParamsProvided_WHEN_score_THEN_updatesGameInStorage() {
+        //given
+        ArgumentCaptor<TeamsScore> teamsScoreCaptor = ArgumentCaptor.forClass(TeamsScore.class);
+        var teamsScore = TeamsScore.builder()
+                .homeTeam("Austria")
+                .awayTeam("Belgium")
+                .homeTeamScore(0)
+                .awayTeamScore(1)
+                .build();
+        //when
+        gameServiceImpl.score(teamsScore);
+        //then
+        verify(gameStorage, times(1)).update(teamsScoreCaptor.capture());
+        var capturedTeamsScore = teamsScoreCaptor.getValue();
+        assertEquals(teamsScore, capturedTeamsScore);
+    }
 
 }
