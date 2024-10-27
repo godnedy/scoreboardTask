@@ -153,4 +153,28 @@ class GameServiceImplTest {
         assertEquals(teamsScore, capturedTeamsScore);
     }
 
+    @ParameterizedTest(name = "{0} as homeTeam and {1} as awayTeam")
+    //etc. this is not a final list of all edge cases
+    @CsvSource({"Austria,Austria",
+            "Austria,''",
+            "'',''",
+            "'',Austria",
+            ",",
+            "Austria,",
+            ",Austria",
+            "'',",
+            "' ',Austria",
+            })
+    void GIVEN_wrongParams_WHEN_score_THEN_IllegalArgumentExpectionIsThrown(String homeTeam, String awayTeam) {
+        //given
+        var teamsScore = TeamsScore.builder()
+                .homeTeam(homeTeam)
+                .awayTeam(awayTeam)
+                .homeTeamScore(0)
+                .awayTeamScore(1)
+                .build();
+        //then
+        assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.score(teamsScore));
+    }
+
 }
