@@ -64,6 +64,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<GameDTO> findGamesInProgress() {
-        return List.of();
+        return gameStorage.findGamesInProgress()
+                .stream()
+                .map(GameDTO::from)
+                .toList();
     }
 }
