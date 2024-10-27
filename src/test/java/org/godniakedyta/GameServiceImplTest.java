@@ -163,15 +163,32 @@ class GameServiceImplTest {
             "Austria,",
             ",Austria",
             "'',",
-            "' ',Austria",
-            })
-    void GIVEN_wrongParams_WHEN_score_THEN_IllegalArgumentExpectionIsThrown(String homeTeam, String awayTeam) {
+            "' ',Austria"})
+    void GIVEN_wrongTeams_WHEN_score_THEN_IllegalArgumentExpectionIsThrown(String homeTeam, String awayTeam) {
         //given
         var teamsScore = TeamsScore.builder()
                 .homeTeam(homeTeam)
                 .awayTeam(awayTeam)
                 .homeTeamScore(0)
                 .awayTeamScore(1)
+                .build();
+        //then
+        assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.score(teamsScore));
+    }
+
+    @ParameterizedTest(name = "{0} as homeTeamScore and {1} as awayTeamScore")
+    @CsvSource({"-1,0",
+            "-1,-1",
+            "0,-1",
+            "1,-1",
+            "-1, 1"})
+    void GIVEN_negativeScore_WHEN_score_THEN_IllegalArgumentExpectionIsThrown(int homeTeamScore, int awayTeamScore) {
+        //given
+        var teamsScore = TeamsScore.builder()
+                .homeTeam("Austria")
+                .awayTeam("Belgium")
+                .homeTeamScore(homeTeamScore)
+                .awayTeamScore(awayTeamScore)
                 .build();
         //then
         assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.score(teamsScore));
