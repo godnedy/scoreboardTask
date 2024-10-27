@@ -194,4 +194,10 @@ class GameServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> gameServiceImpl.score(teamsScore));
     }
 
+    @Test
+    void WHEN_findGamesInProgess_THEN_runWithoutExceptions() {
+        //when
+        gameServiceImpl.findGamesInProgress();
+    }
+
 }
