@@ -50,6 +50,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void score(TeamsScore teamsScore) {
+        validateTeams(teamsScore.homeTeam(), teamsScore.awayTeam());
         gameStorage.update(teamsScore);
     }
 }
