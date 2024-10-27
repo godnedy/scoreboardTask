@@ -50,6 +50,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void score(TeamsScore teamsScore) {
-
+        gameStorage.update(teamsScore);
     }
 }
