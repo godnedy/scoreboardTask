@@ -9,6 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,7 +78,8 @@ class GameServiceImplTest {
             "Belgium,Austria"})
     void GIVEN_allParamsProvided_WHEN_startAndGameAlreadyExists_THEN_UnsupportedOperationExceptionIsThrown(String homeTeam, String awayTeam) {
         //when
-        when(gameStorage.findGameByRivals(any())).thenReturn(Optional.of(Game.builder().build()));
+        var game = validGame("Austria", "Belgium");
+        when(gameStorage.findGameByRivals(any())).thenReturn(Optional.of(game));
         //then
         assertThrows(RuntimeException.class, () -> gameServiceImpl.start(homeTeam, awayTeam));
     }
@@ -198,6 +200,32 @@ class GameServiceImplTest {
     void WHEN_findGamesInProgess_THEN_runWithoutExceptions() {
         //when
         gameServiceImpl.findGamesInProgress();
+    }
+
+    @Test
+    void WHEN_findGamesInProgess_THEN_returnsListOfGameDTO() {
+        //given
+        var game1 = validGame("Austria", "Belgium");
+        var game2 = validGame("Poland", "Germany");
+        var game1DTO = new GameDTO("Austria", "Belgium", 0, 1);
+        var game2DTO = new GameDTO("Poland", "Germany", 0, 1);
+
+        when(gameStorage.findGamesInProgress()).thenReturn(List.of(game1, game2));
+        //when
+        var foundGames = gameServiceImpl.findGamesInProgress();
+        //then
+        assertEquals(foundGames.size(), 2);
+        assertEquals(foundGames.get(0), game1DTO);
+        assertEquals(foundGames.get(1), game2DTO);
+    }
+
+    private Game validGame(String homeTeam, String awayTeam) {
+        return Game.builder()
+                .rivals(new Rivals(homeTeam, awayTeam))
+                .homeTeamScore(0)
+                .awayTeamScore(1)
+                .startTime(ZonedDateTime.now())
+                .build();
     }
 
 }
