@@ -3,6 +3,7 @@ package org.godniakedyta.game;
 import lombok.RequiredArgsConstructor;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
@@ -59,5 +60,10 @@ public class GameServiceImpl implements GameService {
         if (homeTeamScore < 0 || awayTeamScore < 0) {
             throw new IllegalArgumentException("Score cannot be negative");
         }
+    }
+
+    @Override
+    public List<GameDTO> findGamesInProgress() {
+        return List.of();
     }
 }
